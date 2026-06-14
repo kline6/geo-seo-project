@@ -1,0 +1,94 @@
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  LayoutDashboard,
+  Bot,
+  Stethoscope,
+  FolderOpen,
+  PenTool,
+  Copy,
+  Send,
+  BarChart3,
+  Wrench,
+  Search,
+  CheckCircle,
+  ChevronDown,
+  ChevronLeft,
+  ChevronsLeft,
+} from "lucide-react";
+
+const menuItems = [
+  { id: "dashboard", label: "工作台", icon: LayoutDashboard, path: "/" },
+  { id: "ai-assistant", label: "AI 智能助手", icon: Bot, path: "/ai-assistant" },
+  { id: "ai-diagnosis", label: "AI 诊断", icon: Stethoscope, path: "/ai-diagnosis", hasSubmenu: true },
+  { id: "materials", label: "素材库", icon: FolderOpen, path: "/materials" },
+  { id: "ai-writing", label: "AI 写作", icon: PenTool, path: "/ai-writing", hasSubmenu: true },
+  { id: "hot-copy", label: "热文复制", icon: Copy, path: "/hot-copy", hasSubmenu: true },
+  { id: "publish", label: "发布", icon: Send, path: "/publish", hasSubmenu: true },
+  { id: "data-analysis", label: "数据分析", icon: BarChart3, path: "/data-analysis", hasSubmenu: true },
+  { id: "ai-tools", label: "AI 工具", icon: Wrench, path: "/ai-tools", hasSubmenu: true },
+  { id: "seo-geo", label: "SEO & GEO", icon: Search, path: "/seo-geo", hasSubmenu: true },
+  { id: "trust-score", label: "信任度评分", icon: CheckCircle, path: "/trust-score", hasSubmenu: true },
+];
+
+function Sidebar() {
+  const location = useLocation();
+  const [collapsed, setCollapsed] = useState(false);
+
+  return (
+    <div className={`sidebar ${collapsed ? "sidebar-collapsed" : ""}`}>
+      <div className="sidebar-logo">
+        <div className="logo-icon">G</div>
+        {!collapsed && <span className="logo-text">GEO Platform</span>}
+      </div>
+
+      <nav className="sidebar-nav">
+        {menuItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = item.path === "/"
+            ? location.pathname === "/"
+            : location.pathname.startsWith(item.path);
+          return (
+            <Link
+              key={item.id}
+              to={item.path}
+              className={`nav-item ${isActive ? "active" : ""}`}
+              style={{ textDecoration: "none" }}
+              title={collapsed ? item.label : undefined}
+            >
+              <Icon size={18} />
+              {!collapsed && <span>{item.label}</span>}
+              {!collapsed && item.hasSubmenu && (
+                <ChevronDown size={14} style={{ marginLeft: "auto", opacity: 0.5 }} />
+              )}
+            </Link>
+          );
+        })}
+      </nav>
+
+      <div className="sidebar-footer">
+        {!collapsed && (
+          <>
+            <div className="user-card">
+              <div className="user-avatar">G</div>
+              <div className="user-info">
+                <span className="user-name">GEO用户</span>
+                <span className="user-plan">永久至尊国际版</span>
+              </div>
+            </div>
+            <div className="user-contact">作者微信: H6220073</div>
+          </>
+        )}
+        <button
+          className="sidebar-collapse-btn"
+          onClick={() => setCollapsed(!collapsed)}
+          title={collapsed ? "展开侧栏" : "收起侧栏"}
+        >
+          <ChevronsLeft size={16} style={{ transform: collapsed ? "rotate(180deg)" : "none", transition: "transform 0.3s" }} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default Sidebar;

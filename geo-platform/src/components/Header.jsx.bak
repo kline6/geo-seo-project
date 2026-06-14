@@ -1,0 +1,41 @@
+import React from "react";
+import { Menu, ChevronRight, Globe, User, Minus, Square, X } from "lucide-react";
+
+function Header() {
+  const handleMinimize = () => window.electron?.ipcRenderer?.send("window-minimize");
+  const handleMaximize = () => window.electron?.ipcRenderer?.send("window-maximize");
+  const handleClose = () => window.electron?.ipcRenderer?.send("window-close");
+
+  return (
+    <div className="header">
+      <div className="header-left">
+        <div className="breadcrumb">
+          首页 <ChevronRight size={14} /> <span>工作台</span>
+        </div>
+      </div>
+      <div className="header-right">
+        <button className="lang-selector">
+          CN <Globe size={14} />
+        </button>
+        <div className="header-user">
+          <div className="header-avatar">G</div>
+          <span style={{ fontSize: 14 }}>GEO用户</span>
+          <ChevronRight size={14} style={{ color: "var(--text-secondary)" }} />
+        </div>
+        <div className="window-controls">
+          <button className="window-btn" onClick={handleMinimize} title="最小化">
+            <Minus size={14} />
+          </button>
+          <button className="window-btn" onClick={handleMaximize} title="最大化">
+            <Square size={12} />
+          </button>
+          <button className="window-btn window-btn-close" onClick={handleClose} title="关闭">
+            <X size={14} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Header;
